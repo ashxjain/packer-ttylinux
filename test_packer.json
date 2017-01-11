@@ -1,0 +1,58 @@
+{
+        "variables": {
+                "remote_host": "xx.xx.xx.xx",
+                "remote_user": "xxxx",
+                "remote_pass": "xxxx",
+                "remote_datastore": "xxxxxx"
+        },
+  "builders": [
+    {
+      "type": "vmware-iso",
+                "remote_type": "esx5",
+                "remote_host": "{{ user `remote_host` }}",
+                "remote_username": "{{ user `remote_user` }}",
+                "remote_password": "{{ user `remote_pass` }}",
+                "remote_datastore": "{{ user `remote_datastore` }}",
+                "format": "ova",
+
+      "vm_name": "ttylinx_templ",
+      "vmdk_name": "ttylinux",
+      "output_directory": "./packer_templates",
+      "boot_command": [
+        "ttylinux enet<enter>",
+        "<wait5>",
+        "<wait5>",
+        "<wait5>",
+        "<wait5>",
+        "root<enter><wait>password<enter><wait>",
+        "nslookup www.vmware.com<enter>"
+      ],
+      "vnc_port_min": 8080,
+      "vnc_port_max": 8080,
+      "boot_wait": "5s",
+      "disk_size": 4096,
+      "disk_type_id": "thin",
+      "guest_os_type": "other26xlinux",
+      "iso_checksum": "23d4710396bdbef6c6979d69b763230b",
+      "iso_checksum_type": "md5",
+      "iso_urls": [
+        "http://dl.bintray.com/dougm/ttylinux/ttylinux-pc_i486-16.1.iso"
+      ],
+      "ssh_skip_request_pty": true,
+      "ssh_username": "root",
+      "ssh_password": "password",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "200s",
+      "shutdown_command": "/sbin/shutdown -h",
+      "vmx_data": {
+		"ethernet0.networkName": "Mgmt Network",
+		"ethernet0.present": "TRUE",
+		"ethernet0.startConnected": "TRUE",
+		"ethernet0.virtualDev": "e1000",
+		"ethernet0.addressType": "generated",
+		"memsize": "32",
+		"numvcpus": "1"
+      }
+    }
+  ]
+}
